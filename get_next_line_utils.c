@@ -6,7 +6,7 @@
 /*   By: galves-d <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/08 17:23:18 by galves-d          #+#    #+#             */
-/*   Updated: 2020/03/09 19:26:46 by galves-d         ###   ########.fr       */
+/*   Updated: 2020/03/10 19:51:38 by galves-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char		*sub;
 
 	length = 0;
-	if (!s)
+	if (!s || len <= 0)
 		return (NULL);
 	s_len = ft_strlen_eof(s + start);
 	if (start < ft_strlen_eof(s))
@@ -89,4 +89,40 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ft_memmove(sub, &s[start], length * sizeof(char));
 	sub[length] = '\0';
 	return (sub);
+}
+
+
+
+
+
+
+
+
+
+void	ft_putnbr(int nb)
+{
+	int		q;
+	char	r;
+
+	if (nb == -2147483648)
+	{
+		write(1, "-2147483648", 11);
+		return ;
+	}
+	if (nb < 0)
+	{
+		write(1, "-", 1);
+		nb *= -1;
+	}
+	q = nb / 10;
+	r = '0' + nb % 10;
+	if (!q)
+	{
+		write(1, &r, 1);
+	}
+	else
+	{
+		ft_putnbr(q);
+		write(1, &r, 1);
+	}
 }

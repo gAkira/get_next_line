@@ -6,7 +6,7 @@
 /*   By: galves-d <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/08 16:50:31 by galves-d          #+#    #+#             */
-/*   Updated: 2020/03/09 20:02:28 by galves-d         ###   ########.fr       */
+/*   Updated: 2020/03/10 19:51:38 by galves-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,16 @@ static int	put_line_file(char **line, char **file, size_t endl)
 	int		rtrn_value;
 	char	*aux;
 
+	write(1, ">>>> Entrou em put_line_file!\n", 30);
+	
 	rtrn_value = 1;
 	if (find_char(*file, '\n') < 0 && find_char(*file, EOF) >= 0)
 		rtrn_value = 0;
-	ft_free((void**)line);
+
+	ft_putnbr(ft_strlen_eof(*file));
+	write(1, "\t", 1);
+	
+
 	if (!(*line = ft_substr(*file, 0, endl)) || !ft_strlen_eof(*file) || !endl
 		|| !(aux = ft_substr(*file, endl + 1, ft_strlen_eof(*file) - endl - 1)))
 		return (-1);
@@ -35,12 +41,17 @@ static int	put_line(char **line, char **file, char **buf, size_t endl)
 	size_t	file_len;
 	size_t	buf_len;
 
+	write(1, ">>>> Entrou em put_line!\n", 25);
+	
 	rtrn_value = 1;
 	if ((*buf)[endl] == EOF)
 		rtrn_value = 0;
+
+	ft_putnbr(endl);
+	write(1, "\t", 1);
+
 	file_len = ft_strlen_eof(*file);
 	buf_len = endl;
-	ft_free((void**)line);
 	if (!(*line = (char*)malloc(file_len + buf_len + 1)))
 		return (-1);
 	ft_memmove(*line, *file, file_len);
@@ -59,6 +70,8 @@ static int	store_file_buf(char **file, char **buf)
 	size_t	file_len;
 	size_t	buf_len;
 
+	write(1, ">>>> Entrou em store_file_buf!\n", 31);
+	
 	file_len = ft_strlen_eof(*file);
 	buf_len = ft_strlen_eof(*buf);
 	if (!(aux = (char*)malloc(file_len + buf_len + 1)))
@@ -73,7 +86,7 @@ static int	store_file_buf(char **file, char **buf)
 
 int			get_next_line(int fd, char **line)
 {
-	static char		*files[FOPEN_MAX];
+	static char		*files[OPEN_MAX];
 	char			*buf;
 	ssize_t			endl;
 	ssize_t			buf_size;
@@ -83,11 +96,12 @@ int			get_next_line(int fd, char **line)
 	if (files[fd] && ((endl = find_char(files[fd], '\n')) >= 0 ||
 				(endl = find_char(files[fd], EOF)) >= 0))
 		return (put_line_file(line, &(files[fd]), (size_t)endl));
-	if (!(buf = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char))) ||
-			((buf_size = read(fd, buf, BUFFER_SIZE)) < 0))
+	if (!(buf = (char*)malloc((BUFFER_SIZE + 1) * sizeof(char)))
+				|| ((buf_size = read(fd, buf, BUFFER_SIZE)) < 0))
 		return (-1);
 	buf[buf_size] = buf_size < BUFFER_SIZE ? '\0' : EOF;
-	if ((endl = find_char(buf, buf_size < BUFFER_SIZE ? '\n' : EOF)) >= 0)
+	if ((endl = find_char(buf, '\n')) >= 0 || (endl =
+					find_char(buf, EOF)) >= 0)
 		return (put_line(line, &(files[fd]), &buf, (size_t)endl));
 	if (!store_file_buf(&(files[fd]), &buf))
 		return (-1);
