@@ -6,11 +6,11 @@
 #    By: galves-d <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/10 18:20:38 by galves-d          #+#    #+#              #
-#    Updated: 2020/03/10 19:42:54 by galves-d         ###   ########.fr        #
+#    Updated: 2020/03/11 20:39:52 by galves-d         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-BUF_SIZE	=	32
+BUF_SIZE	=	5
 
 CC		=	gcc
 C_FLAGS	=	-Wall	\
@@ -35,6 +35,14 @@ $(OBJ_DIR)/main.o:	main.c
 	@$(CC) $(C_FLAGS) -I.. -c $< -o $@
 
 t: $(OBJ) $(OBJ_DIR)/main.o
+	@echo "BUFFER_SIZE = $(BUF_SIZE)"
+	@echo "-------------------------"
 	@$(CC) $(C_FLAGS) -I.. $(OBJ) $(OBJ_DIR)/main.o -o output
 	@./output
 	@$(RM) -r $(OBJ_DIR)
+	@$(RM) ./output
+
+d: dev.c
+	@$(CC) dev.c -o output
+	@./output
+	@$(RM) ./output

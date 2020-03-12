@@ -6,7 +6,7 @@
 /*   By: galves-d <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/08 17:23:18 by galves-d          #+#    #+#             */
-/*   Updated: 2020/03/10 19:51:38 by galves-d         ###   ########.fr       */
+/*   Updated: 2020/03/11 20:32:18 by galves-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ ssize_t	find_char(const char *str, int c)
 	ssize_t	i;
 
 	i = 0;
-	while (str && str[i] && str[i] != EOF)
+	while (str && str[i])
 	{
 		if (str[i] == c)
 			return (i);
@@ -28,12 +28,12 @@ ssize_t	find_char(const char *str, int c)
 	return (-1);
 }
 
-size_t	ft_strlen_eof(const char *str)
+size_t	ft_strlen(const char *str)
 {
 	size_t	len;
 
 	len = 0;
-	while (str && str[len] && str[len] != EOF)
+	while (str && str[len])
 		len++;
 	return (len);
 }
@@ -51,7 +51,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 {
 	size_t	i;
 
-	if (len && (unsigned long)dst > (unsigned long)src)
+	if (src && len && (unsigned long)dst > (unsigned long)src)
 	{
 		i = 1;
 		while (src != dst && i <= len)
@@ -60,7 +60,7 @@ void	*ft_memmove(void *dst, const void *src, size_t len)
 			i++;
 		}
 	}
-	else
+	else if (src && len)
 	{
 		i = 0;
 		while (dst != src && i < len)
@@ -79,10 +79,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char		*sub;
 
 	length = 0;
-	if (!s || len <= 0)
+	if (!s || len < 0)
 		return (NULL);
-	s_len = ft_strlen_eof(s + start);
-	if (start < ft_strlen_eof(s))
+	s_len = ft_strlen(s + start);
+	if (start < ft_strlen(s))
 		length = (len > s_len ? s_len : len);
 	if (!(sub = (char*)malloc((length + 1) * sizeof(char))))
 		return (NULL);
