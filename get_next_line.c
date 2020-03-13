@@ -6,7 +6,7 @@
 /*   By: galves-d <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/08 16:50:31 by galves-d          #+#    #+#             */
-/*   Updated: 2020/03/11 21:15:19 by galves-d         ###   ########.fr       */
+/*   Updated: 2020/03/12 21:31:54 by galves-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@ static int	put_line_file(char **line, char **file, size_t endl)
 	int		rtrn_value;
 	char	*aux;
 
-	//write(1, ">>>> Entrou em put_line_file!\n", 30);
 	if ((*file)[0] == EOF)
+	{
+		ft_free((void**)file);
+		if (!(*line = (char*)malloc(1)))
+			return (-1);
+		(*line)[0] = '\0';
 		return (0);
+	}
 	rtrn_value = 1;
 	if (find_char(*file, '\n') < 0 && find_char(*file, EOF) >= 0)
 		rtrn_value = 0;
@@ -37,14 +42,16 @@ static int	put_line(char **line, char **file, char **buf, size_t endl)
 	size_t	file_len;
 	size_t	buf_len;
 
-	//write(1, ">>>> Entrou em put_line!\n", 25);
 	rtrn_value = 1;
 	if ((*buf)[endl] == EOF)
 		rtrn_value = 0;
 	file_len = ft_strlen(*file);
 	buf_len = rtrn_value ? endl : endl + 1;
 	if (!(*line = (char*)malloc(file_len + endl + 1)))
+	{
+		ft_free((void**)buf);
 		return (-1);
+	}
 	ft_memmove(*line, *file, file_len);
 	ft_memmove(&((*line)[file_len]), *buf, endl);
 	(*line)[file_len + endl] = '\0';
@@ -61,11 +68,13 @@ static int	store_file_buf(char **file, char **buf)
 	size_t	file_len;
 	size_t	buf_len;
 
-	//write(1, ">>>> Entrou em store_file_buf!\n", 31);
 	file_len = ft_strlen(*file);
 	buf_len = ft_strlen(*buf);
 	if (!(aux = (char*)malloc(file_len + buf_len + 1)))
+	{
+		ft_free((void**)buf);
 		return (0);
+	}
 	ft_memmove(aux, *file, file_len);
 	ft_memmove(&(aux[file_len]), *buf, buf_len + 1);
 	ft_free((void**)file);
