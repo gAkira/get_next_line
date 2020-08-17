@@ -25,4 +25,5 @@ line: the value of what has been read
 ```
 
 #### Obs.:
+The goal of this function is to learn about buffer size and use static variables
 The function must use the BUFFER\_SIZE defined during compilation to read from a file or from stdin
