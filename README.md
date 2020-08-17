@@ -1,4 +1,4 @@
-## This is a project from Ecole 42
+## get\_next\_line: this is a project from École 42
 
 #### Function name:
 get\_next\_line
