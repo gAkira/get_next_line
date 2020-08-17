@@ -20,3 +20,5 @@ Tester_GNL/
 42cursus_gnl_tests/
 teste/
 test/output.dSYM
+.gitignore
+test
